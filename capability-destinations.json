@@ -1,0 +1,77 @@
+{
+  "generated_by": "cangjie-tools v2.5.0",
+  "bundle_id": "bundle.nocobase",
+  "router_entrypoint": "nocobase-playbook",
+  "entrypoint_count": 8,
+  "capability_count": 17,
+  "destinations": {
+    "cap.data-model-first": {
+      "promoted_to": "data-model-first",
+      "router_view": "nocobase-playbook/references/capabilities/data-model-first.md"
+    },
+    "cap.collection-relation-choice": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/collection-relation-choice.md"
+    },
+    "cap.main-vs-external-datasource": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/main-vs-external-datasource.md"
+    },
+    "cap.block-field-action-model": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/block-field-action-model.md"
+    },
+    "cap.config-first-js-fallback": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/config-first-js-fallback.md"
+    },
+    "cap.reference-vs-duplicate": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/reference-vs-duplicate.md"
+    },
+    "cap.trigger-selection-timeline": {
+      "promoted_to": "trigger-selection-timeline",
+      "router_view": "nocobase-playbook/references/capabilities/trigger-selection-timeline.md"
+    },
+    "cap.four-layer-permission-funnel": {
+      "promoted_to": "four-layer-permission-funnel",
+      "router_view": "nocobase-playbook/references/capabilities/four-layer-permission-funnel.md"
+    },
+    "cap.revision-checkpoint": {
+      "promoted_to": "revision-checkpoint",
+      "router_view": "nocobase-playbook/references/capabilities/revision-checkpoint.md"
+    },
+    "cap.migration-version-backup": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/migration-version-backup.md"
+    },
+    "cap.skill-orchestration-chain": {
+      "promoted_to": "skill-orchestration-chain",
+      "router_view": "nocobase-playbook/references/capabilities/skill-orchestration-chain.md"
+    },
+    "cap.ai-employee-two-layer": {
+      "promoted_to": "ai-employee-two-layer",
+      "router_view": "nocobase-playbook/references/capabilities/ai-employee-two-layer.md"
+    },
+    "cap.nine-element-prompt": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/nine-element-prompt.md"
+    },
+    "cap.ai-guardrails-four-layer": {
+      "promoted_to": "ai-guardrails-four-layer",
+      "router_view": "nocobase-playbook/references/capabilities/ai-guardrails-four-layer.md"
+    },
+    "cap.t-shaped-data-architecture": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/t-shaped-data-architecture.md"
+    },
+    "cap.portal-app-space-model": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/portal-app-space-model.md"
+    },
+    "cap.rag-tuning-loop": {
+      "served_by": "nocobase-playbook",
+      "card": "nocobase-playbook/references/capabilities/rag-tuning-loop.md"
+    }
+  }
+}
