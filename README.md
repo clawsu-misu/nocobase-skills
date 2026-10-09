@@ -14,10 +14,15 @@
 ## 快速开始
 
 ```bash
+git clone https://github.com/clawsu-misu/nocobase-skills.git
+cd nocobase-skills
+
 ./install.sh --dry-run    # 先看会做什么，不落盘
 ./install.sh              # 安装到 ~/.workbuddy/skills/
 ./verify.sh               # 校验 skills/ 是否被手改过
 ```
+
+其它常用参数：`./install.sh --list`（列出 8 个入口）、`-t <目录>`（改安装目标）、`--force`（覆盖前自动备份为 `*.bak-<时间戳>`）、`--uninstall`（只删本包这 8 个，不碰其它 Skill）。
 
 装完直接在对话里说需求即可，Skill 会按各自的 `description` 自动触发；不确定该找谁时，先落到 `nocobase-playbook` 由它路由。
 
