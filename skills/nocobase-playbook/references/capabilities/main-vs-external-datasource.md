@@ -89,6 +89,24 @@
 
 ---
 
+## 移交执行（官方 Skill）
+
+**本包是「脑」，官方 `nocobase/*` Skills 是「手」。** 本卡只回答「该不该做、按什么顺序做、边界在哪」；
+判定完成后，**具体操作交给官方 Skill** —— 它们依赖 `nb` CLI 与一个运行中的 NocoBase 实例。
+
+**注意**：官方 20 个 Skill 目前全部声明 `NocoBase 2 only; never use in a NocoBase 3 project`。
+若你的实例是 3.x，先确认该 Skill 是否已适配，否则本卡仅作判断依据，执行另寻路径。
+
+**官方 20 个 Skill 的完整清单与全部对接关系**：见仓库 README 的《与官方 Skills 的关系》一节。
+
+| 移交时机（判断已完成） | 交给 | 移交内容 |
+|---|---|---|
+| 已决定用主库还是外部库，要真接数据源 | `nocobase-data-modeling` · `nocobase-env-manage` | 数据源接入与外部库表映射；环境级配置与 CLI 维护 |
+
+> 官方技能由 npm 包 `@nocobase/skills`（ISC 许可）提供，`nb skills update` 会整体覆盖 —— 因此本包只写「移交给谁」，绝不复制官方内容。
+
+---
+
 ## 审计信息
 
 - **三重验证**：V1 ✓ / V2 ✓ / V3 ✓

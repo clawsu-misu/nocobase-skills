@@ -123,3 +123,47 @@
 - [x] 已向用户展示并得到确认
 
 **用户确认时间**：2026-10-09（骨架与蒸馏重心在阶段 0 后经用户确认：走「搭建者全链路」）
+
+---
+
+---
+
+## 5. 与官方 Skills 的对接（脑 ↔ 手）
+
+本次蒸馏的产物是**判断层**（该不该做 / 顺序 / 边界）。官方仓库 [nocobase/skills](https://github.com/nocobase/skills)（npm `@nocobase/skills`，ISC 许可）提供的是**执行层**：20 个依赖 `nb` CLI 真正操作实例的技能。
+
+**两层是单向接线，不混装、不合并、不 fork**。理由是官方技能为 npm 包，`nb skills update` 会整体覆盖任何本地改动 —— 只写「移交给谁」可以做到零维护负担。
+
+> **版本前提**：官方 20 个技能目前全部声明 `NocoBase 2 only; never use in a NocoBase 3 project`；本包的判断规则跨版本（其中 4 条迁移性最高的完全不依赖 NocoBase）。
+
+### 5.1 官方 20 个 Skill 与对接关系
+
+| 官方 Skill | 职责 | 能力边界 | 本包移交给它的能力 |
+|---|---|---|---|
+| `nocobase-portal-manage` | UI 编写总调度器 | 页面 / 菜单 / 区块 / 字段 / 操作 / 布局 / 联动 / KPI / 仪表盘 / 图表的默认入口；先从 nb portal list 解析出唯一启用 Portal | `block-field-action-model`、`config-first-js-fallback`、`reference-vs-duplicate`、`nine-element-prompt`、`portal-app-space-model` |
+| `nocobase-ui-builder` | No-code Portal UI 实现 | 仅在上游已解析出唯一 Portal 且 portalType=no-code 时接续；不从原始 UI 请求直接选中 | —（本包无对应判断卡，属纯执行/参考技能） |
+| `nocobase-data-modeling` | 数据模型管理 | collection / field / relation / 视图表结构的检视与变更 | `data-model-first`、`collection-relation-choice`、`main-vs-external-datasource`、`t-shaped-data-architecture` |
+| `nocobase-acl-manage` | ACL 治理 | 角色生命周期、全局角色模式、权限策略、Portal 入口访问、用户-角色绑定与风险评估 | `four-layer-permission-funnel`、`ai-guardrails-four-layer` |
+| `nocobase-workflow-manage` | 工作流管理 | 工作流的检视 / 创建 / 更新 / 复制 / 启停 / 版本安全编辑 / 执行排障 | `trigger-selection-timeline` |
+| `nocobase-revision` | 版本存档 | 把一个「已完成且有意义的里程碑」存成可恢复的版本 | `revision-checkpoint`、`migration-version-backup` |
+| `nocobase-publish-manage` | 备份与迁移发布 | 备份还原（nb api backup）与迁移发布（nb api migration） | `migration-version-backup` |
+| `nocobase-ai-employee` | AI 员工生命周期 | 发现已有员工、判断适配、创建 / 维护专用员工、准备绑定到界面 | `ai-employee-two-layer`、`ai-guardrails-four-layer` |
+| `nocobase-ai-knowledge-base-manager` | 知识库与向量库 | 知识库能力核对、向量库、Local / Readonly / External 知识库、文档、检索测试 | `rag-tuning-loop` |
+| `nocobase-ai-manager` | AI 核心前置 | LLM provider、已保存服务、CLI 与 UI 的配置分工、对话模型、embedding 发现、凭证安全 | `rag-tuning-loop` |
+| `nocobase-ai-builder` | AI Portal 源码应用 | 在 AI Portal 里设计 / 搭建 / 验证源码级应用（基于 portal-template-default） | `nine-element-prompt`、`portal-app-space-model` |
+| `nocobase-dsl-reconciler` | DSL 路径（opt-in） | 仅在用户明确要 YAML / DSL / 可提交 git / cli push 时使用 | `skill-orchestration-chain` |
+| `nocobase-env-manage` | 环境与 CLI 维护 | bootstrap、运行时生命周期、CLI 维护、技能维护 | `main-vs-external-datasource`、`skill-orchestration-chain` |
+| `nocobase-plugin-manage` | 插件启停 | 用 nb plugin 检视 / 启用 / 停用插件 | —（本包无对应判断卡，属纯执行/参考技能） |
+| `nocobase-plugin-development` | 插件源码开发 | 脚手架、服务端与客户端代码、i18n、验证的完整 playbook | —（本包无对应判断卡，属纯执行/参考技能） |
+| `nocobase-notification-manage` | 通知管理 | 站内信通道、邮件 SMTP 通道、工作流通知节点、发送日志 | `trigger-selection-timeline` |
+| `nocobase-file-manager` | 文件存储 | 文件存储引擎、文件表、业务关联与文件记录生命周期 | —（本包无对应判断卡，属纯执行/参考技能） |
+| `nocobase-data-analysis` | 数据查询分析 | 通过 MCP 查询与汇总业务数据（计数、分组、归属分布） | —（本包无对应判断卡，属纯执行/参考技能） |
+| `nocobase-prototype-repro` | 原型复刻 | 给定 HTML / 图片 / 链接原型时按版式与标志性视觉复刻 | —（本包无对应判断卡，属纯执行/参考技能） |
+| `nocobase-utils` | 通用参考 | 过滤条件与字段操作符、求值引擎、表达式语法、UID 生成等跨功能参考 | `config-first-js-fallback` |
+
+### 5.2 覆盖统计
+
+- 本包 17 张能力卡中，**17 张**有明确的官方执行手（每张卡末节「移交执行」列出）。
+- 官方 20 个 Skill 中，**14 个**被本包的判断卡覆盖；其余为纯执行、参考或开发向技能，不属于「搭建者全链路」的判断范围。
+- 两层**同主题但不重复**：例如官方 `nocobase-revision` 执行 `nb revision create`，本包 `revision-checkpoint` 判断**何时**该存、描述怎么写、恢复前先做什么。
+

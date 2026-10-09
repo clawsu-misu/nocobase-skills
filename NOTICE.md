@@ -18,12 +18,23 @@
 | 方法 | 仓颉六阶段精馏法（RIA++ 能力卡结构） |
 | 工具 | cangjie-tools v2.5.0 |
 | Bundle | `bundle.nocobase` |
-| Bundle sha256 | `44d1c81fda90f067e9778720c4eb2ac7f606930acc437e2e8ab44d9bb1459ee0` |
-| Run ID | `run-20261009-175015-df01fb` |
+| Bundle sha256 | `cd752e05f16cf2c1ad91b6c7b4eed0c4cac86b0784ec05b49276ffb929794bdd` |
+| Run ID | `run-20261009-182139-a6e4e1` |
 | 筛选结果 | 候选池 128 条 → 三重验证（跨域验证 / 预测力 / 独特性）→ 17 条方法论 → 8 个可发现入口 |
 | 淘汰记录 | 5 类纯参考型内容（字段类型逐一说明、外部库连接步骤、plugin-development/api 细节、ECharts option 细节、文件/邮件配置步骤） |
 
 每个产物文件的 sha256 记录在 `BUILD_MANIFEST.json` 的 `published_hashes` 中，可用 `./verify.sh` 复核。
+
+## 引用的第三方技能包
+
+| 项 | 值 |
+|---|---|
+| 名称 | NocoBase 官方 Skills（`github.com/nocobase/skills`，npm 包 `@nocobase/skills`） |
+| 许可 | **ISC** |
+| 引用方式 | **仅按名称引用**——在各能力卡「移交执行」一节与 README《与官方 Skills 的关系》中写「判定完成后移交给哪个官方 Skill」，用于说明两层的分工 |
+| 未引用部分 | 未复制、未改写、未打包官方任何技能文件内容；官方技能仍由 `nb skills install` / `update` 独立分发与更新 |
+
+之所以只做「按名引用」：官方技能是 npm 包，`nb skills update` 会整体覆盖本地改动——将其内容并入本仓库会产生持续的同步负担。
 
 ## 内容性质
 
