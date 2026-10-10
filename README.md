@@ -145,6 +145,31 @@ cp -R skills/nocobase-playbook ~/.workbuddy/skills/
 
 若要官方原味，用 `--src` 指向官方解包目录，或先跑 `nb skills update`。
 
+## 技能装在哪一层：用户级 vs 项目级
+
+WorkBuddy 的技能目录**分两层**（路径解析逻辑从 `app.asar` 反查得到，非推测）：
+
+| 层级 | 目录 | 生效范围 |
+|---|---|---|
+| 用户级 | `~/.workbuddy/skills/` | 所有项目，每次对话都加载 |
+| 项目级 | `{项目}/.workbuddy/skills/` | 仅当 `cwd` 等于该项目时加载 |
+
+本包的 28 个技能（8 个自建 + 20 个官方）**全是 NocoBase 专用**。只装用户级意味着在**任何**项目里都要为它们付一遍 token。搬进项目级后就只在 NocoBase 项目里加载：
+
+```bash
+cd <你的 NocoBase 项目>
+./project-scope.sh --status      # 看当前在两层的分布
+./project-scope.sh --dry-run     # 预演
+./project-scope.sh               # 用户级 → 项目级
+./project-scope.sh --uninstall   # 回滚回用户级
+```
+
+`project-scope.sh` 会自动把「仓库内置的 8 个」与「所有 `nocobase-*`」并成一份清单，两个方向都能搬；`--status` 可随时看分布，`--uninstall` 是对称回滚。
+
+> **生效时机**：技能清单在**新建对话**时确定。搬完之后当前这个对话不会变 —— 新开一个对话，才会按 `cwd` 加载项目级技能。
+>
+> **代价**：项目级技能不被其它项目共享。若你还在别处用其中某几个（例如 `revision-checkpoint` 这类不依赖 NocoBase 的方法论卡），把它们单独放回用户级即可 —— 两层可以并存，同名时**不要**重复放置。
+
 ## 目录结构
 
 ```
@@ -156,8 +181,9 @@ skills/                       8 个可安装 Skill（编译产物，勿手改）
   其余 7 个/                   各一份 SKILL.md（RIA++ 六段结构）
 BUILD_MANIFEST.json           产物哈希清单 + 构建决策记录
 capability-destinations.json  17 条能力卡的去向审计
-install.sh                    安装 / 卸载 / dry-run
+install.sh                    安装到用户级 / 卸载 / dry-run
 link-official.sh              官方 20 个技能：查找 → 校验 → 软链（可选 --check-upstream）
+project-scope.sh              用户级 ↔ 项目级搬迁（--status / --uninstall 回滚）
 verify.sh                     校验 skills/ 是否被手改
 NOTICE.md                     素材来源与版权说明
 ```
@@ -190,7 +216,9 @@ Skill 是纯 Markdown + YAML frontmatter（`name` / `description`），与 Claud
 
 | 版本 | 变更 |
 |---|---|
-| v1.0.2 | 新增 `link-official.sh`：把官方 20 个技能接到 WorkBuddy 执行层，分四道闸 —— 查找（多候选探测 + 同真身识别）→ 校验（目录名 / name / description / 坏链）→ 版本核对（技能包 vs 技能自述代次 vs `nb env` 当前环境）→ 落盘后复验（失败回滚）。支持 `--list` / `--dry-run` / `--mode copy` / `--check-upstream`（从 npm 拉官方包做内容指纹比对）/ `--unlink`（只删软链与逐字节一致的副本，改动过的一律保留）。README 增补候选落点对照与实测结论。 || v1.0.1 | 新增「与官方 Skills 的关系」：17 张能力卡各加一节「移交执行（官方 Skill）」，入口加第 9 条核心原则（脑 ↔ 手分工），`overview.md` 加对接总表；`verified.yaml` 每个能力新增 `handoff` 字段。**未改动任何 `description`**，因此三轮盲测 67/67 的结论继续有效（已记录于 `test-results.md`）。 |
+| v1.0.3 | 新增 `project-scope.sh`：把 28 个技能从用户级 `~/.workbuddy/skills/` 搬进 `{项目}/.workbuddy/skills/`，只在打开该项目时加载，省掉其它项目里的 token 开销。清单由「仓库内置 8 个 + 所有 `nocobase-*`」并集生成，支持 `--status` / `--dry-run` / `--uninstall`（对称回滚）/ `--force` / `--project`。README 增补「技能装在哪一层」对照表与生效时机。同时修掉更新记录里两行粘连的格式错误。 |
+| v1.0.2 | 新增 `link-official.sh`：把官方 20 个技能接到 WorkBuddy 执行层，分四道闸 —— 查找（多候选探测 + 同真身识别）→ 校验（目录名 / name / description / 坏链）→ 版本核对（技能包 vs 技能自述代次 vs `nb env` 当前环境）→ 落盘后复验（失败回滚）。支持 `--list` / `--dry-run` / `--mode copy` / `--check-upstream`（从 npm 拉官方包做内容指纹比对）/ `--unlink`（只删软链与逐字节一致的副本，改动过的一律保留）。README 增补候选落点对照与实测结论。 |
+| v1.0.1 | 新增「与官方 Skills 的关系」：17 张能力卡各加一节「移交执行（官方 Skill）」，入口加第 9 条核心原则（脑 ↔ 手分工），`overview.md` 加对接总表；`verified.yaml` 每个能力新增 `handoff` 字段。**未改动任何 `description`**，因此三轮盲测 67/67 的结论继续有效（已记录于 `test-results.md`）。 |
 | v1.0.0 | 首次发布：17 条方法论 → 8 个可发现入口，含 RIA++ 能力卡、三轮盲测记录与构建清单。 |
 
 ## 许可与来源
